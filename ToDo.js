@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
 		borderColor: '#bbb'
 	},
 	uncompletedCircle: {
-		borderColor: '#F23657'
+		borderColor: '#4dabf7'
 	},
 	text: {
 		fontWeight: '600',
