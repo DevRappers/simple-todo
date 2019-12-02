@@ -21,7 +21,7 @@ export default function App() {
 					autoCorrect={false}
 				/>
 				<ScrollView contentContainerStyle={styles.toDos}>
-					<ToDo />
+					<ToDo text={'안녕하세요 여러분'} />
 				</ScrollView>
 			</View>
 		</View>

@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Dimensions, TextInput } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
-function ToDo() {
+function ToDo({ text }) {
 	const [ isEditing, setIsEditing ] = useState(false);
 	const [ isCompleted, setIsCompleted ] = useState(false);
+	const [ toDoValue, setToDoValue ] = useState('');
 
 	const toggleComplete = () => {
 		setIsCompleted((prevState) => !prevState);
 	};
 	const stateEditing = () => {
+		setToDoValue(text);
 		setIsEditing(true);
 	};
 	const finishEditing = () => {
@@ -22,9 +24,24 @@ function ToDo() {
 				<TouchableOpacity onPress={toggleComplete}>
 					<View style={[ styles.circle, isCompleted ? styles.completedCircle : styles.uncompletedCircle ]} />
 				</TouchableOpacity>
-				<Text style={[ styles.text, isCompleted ? styles.completedText : styles.uncompletedText ]}>
-					Hello I'm a Todo
-				</Text>
+				{isEditing ? (
+					<TextInput
+						style={[
+							styles.input,
+							styles.text,
+							isCompleted ? styles.completedText : styles.uncompletedText
+						]}
+						value={toDoValue}
+						onChangeText={setToDoValue}
+						multiline={true}
+						returnKeyType={'done'}
+						onBlur={finishEditing}
+					/>
+				) : (
+					<Text style={[ styles.text, isCompleted ? styles.completedText : styles.uncompletedText ]}>
+						{text}
+					</Text>
+				)}
 			</View>
 			{isEditing ? (
 				<View style={styles.actions}>
@@ -98,7 +115,8 @@ const styles = StyleSheet.create({
 	actionContainer: {
 		marginVertical: 10,
 		marginHorizontal: 10
-	}
+	},
+	input: {}
 });
 
 export default ToDo;
