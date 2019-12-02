@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, StatusBar, TextInput, Dimensions, Platform, ScrollView } from 'react-native';
+import {
+	StyleSheet,
+	Text,
+	View,
+	StatusBar,
+	TextInput,
+	Dimensions,
+	Platform,
+	ScrollView,
+	AsyncStorage
+} from 'react-native';
 import { AppLoading } from 'expo';
 import ToDo from './ToDo';
 import uuidv1 from 'uuid/v1';
@@ -25,24 +35,33 @@ export default function App() {
 				createdAt: Date.now()
 			};
 			setToDos([ ...toDos, newToDoObject ]);
+			saveToDo(toDos);
 		}
 		setNewToDo('');
 	};
 
 	const deleteToDo = (id) => {
 		setToDos(toDos.filter((toDo) => toDo.id !== id));
+		saveToDo(toDos);
 	};
 
 	const completeToDo = (id) => {
 		setToDos(toDos.map((ToDo) => (ToDo.id === id ? { ...ToDo, isCompleted: true } : ToDo)));
+		saveToDo(toDos);
 	};
 
 	const uncompleteToDo = (id) => {
 		setToDos(toDos.map((ToDo) => (ToDo.id === id ? { ...ToDo, isCompleted: false } : ToDo)));
+		saveToDo(toDos);
 	};
 
 	const updateToDo = (id, text) => {
 		setToDos(toDos.map((ToDo) => (ToDo.id === id ? { ...ToDo, text } : ToDo)));
+		saveToDo(toDos);
+	};
+
+	const saveToDo = (newToDos) => {
+		AsyncStorage.setItem('toDos', JSON.stringify(newToDos));
 	};
 
 	if (!loadedToDos) {
