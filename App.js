@@ -41,6 +41,10 @@ export default function App() {
 		setToDos(toDos.map((ToDo) => (ToDo.id === id ? { ...ToDo, isCompleted: false } : ToDo)));
 	};
 
+	const updateToDo = (id, text) => {
+		setToDos(toDos.map((ToDo) => (ToDo.id === id ? { ...ToDo, text } : ToDo)));
+	};
+
 	if (!loadedToDos) {
 		return <AppLoading />;
 	}
@@ -67,6 +71,7 @@ export default function App() {
 							deleteToDo={deleteToDo}
 							completeToDo={completeToDo}
 							uncompleteToDo={uncompleteToDo}
+							updateToDo={updateToDo}
 						/>
 					))}
 				</ScrollView>

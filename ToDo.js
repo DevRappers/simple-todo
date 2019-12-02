@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const { width, height } = Dimensions.get('window');
 
-function ToDo({ text, isCompleted, deleteToDo, id, completeToDo, uncompleteToDo }) {
+function ToDo({ text, isCompleted, deleteToDo, id, completeToDo, uncompleteToDo, updateToDo }) {
 	const [ isEditing, setIsEditing ] = useState(isCompleted);
 	const [ toDoValue, setToDoValue ] = useState(text);
 
@@ -19,6 +19,7 @@ function ToDo({ text, isCompleted, deleteToDo, id, completeToDo, uncompleteToDo 
 		setIsEditing(true);
 	};
 	const finishEditing = () => {
+		updateToDo(id, toDoValue);
 		setIsEditing(false);
 	};
 	return (
@@ -38,6 +39,7 @@ function ToDo({ text, isCompleted, deleteToDo, id, completeToDo, uncompleteToDo 
 						onChangeText={setToDoValue}
 						multiline={true}
 						returnKeyType={'done'}
+						autoCorrect={false}
 						onBlur={finishEditing}
 					/>
 				) : (
@@ -78,7 +80,8 @@ ToDo.propTypes = {
 	deleteToDo: PropTypes.func.isRequired,
 	id: PropTypes.string.isRequired,
 	completeToDo: PropTypes.func.isRequired,
-	uncompleteToDo: PropTypes.func.isRequired
+	uncompleteToDo: PropTypes.func.isRequired,
+	updateToDo: PropTypes.func.isRequired
 };
 
 const styles = StyleSheet.create({
