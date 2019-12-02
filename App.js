@@ -33,11 +33,11 @@ export default class App extends React.Component {
 		return (
 			<View style={styles.container}>
 				<StatusBar barStyle="light-content" />
-				<Text style={styles.title}>Kawai To Do</Text>
+				<Text style={styles.title}>Simple To Do</Text>
 				<View style={styles.card}>
 					<TextInput
 						style={styles.input}
-						placeholder={'New To Do'}
+						placeholder={'새로운 작업목록을 입력'}
 						value={newToDo}
 						onChangeText={this._crontollNewToDo}
 						placeholderTextColor={'#999'}
