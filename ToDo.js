@@ -4,13 +4,16 @@ import PropTypes from 'prop-types';
 
 const { width, height } = Dimensions.get('window');
 
-function ToDo({ text, isCompleted, deleteToDo, id }) {
+function ToDo({ text, isCompleted, deleteToDo, id, completeToDo, uncompleteToDo }) {
 	const [ isEditing, setIsEditing ] = useState(isCompleted);
-	const [ isCompletedS, setIsCompleted ] = useState(false);
 	const [ toDoValue, setToDoValue ] = useState(text);
 
 	const toggleComplete = () => {
-		setIsCompleted((prevState) => !prevState);
+		if (isCompleted) {
+			uncompleteToDo(id);
+		} else {
+			completeToDo(id);
+		}
 	};
 	const startEditing = () => {
 		setIsEditing(true);
@@ -22,14 +25,14 @@ function ToDo({ text, isCompleted, deleteToDo, id }) {
 		<View style={styles.container}>
 			<View style={styles.column}>
 				<TouchableOpacity onPress={toggleComplete}>
-					<View style={[ styles.circle, isCompletedS ? styles.completedCircle : styles.uncompletedCircle ]} />
+					<View style={[ styles.circle, isCompleted ? styles.completedCircle : styles.uncompletedCircle ]} />
 				</TouchableOpacity>
 				{isEditing ? (
 					<TextInput
 						style={[
 							styles.text,
 							styles.input,
-							isCompletedS ? styles.completedText : styles.uncompletedText
+							isCompleted ? styles.completedText : styles.uncompletedText
 						]}
 						value={toDoValue}
 						onChangeText={setToDoValue}
@@ -38,7 +41,7 @@ function ToDo({ text, isCompleted, deleteToDo, id }) {
 						onBlur={finishEditing}
 					/>
 				) : (
-					<Text style={[ styles.text, isCompletedS ? styles.completedText : styles.uncompletedText ]}>
+					<Text style={[ styles.text, isCompleted ? styles.completedText : styles.uncompletedText ]}>
 						{text}
 					</Text>
 				)}
@@ -73,7 +76,9 @@ ToDo.propTypes = {
 	text: PropTypes.string.isRequired,
 	isCompleted: PropTypes.bool.isRequired,
 	deleteToDo: PropTypes.func.isRequired,
-	id: PropTypes.string.isRequired
+	id: PropTypes.string.isRequired,
+	completeToDo: PropTypes.func.isRequired,
+	uncompleteToDo: PropTypes.func.isRequired
 };
 
 const styles = StyleSheet.create({

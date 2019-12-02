@@ -28,8 +28,17 @@ export default function App() {
 		}
 		setNewToDo('');
 	};
+
 	const deleteToDo = (id) => {
 		setToDos(toDos.filter((toDo) => toDo.id !== id));
+	};
+
+	const completeToDo = (id) => {
+		setToDos(toDos.map((ToDo) => (ToDo.id === id ? { ...ToDo, isCompleted: true } : ToDo)));
+	};
+
+	const uncompleteToDo = (id) => {
+		setToDos(toDos.map((ToDo) => (ToDo.id === id ? { ...ToDo, isCompleted: false } : ToDo)));
 	};
 
 	if (!loadedToDos) {
@@ -51,7 +60,15 @@ export default function App() {
 					onSubmitEditing={addToDo}
 				/>
 				<ScrollView contentContainerStyle={styles.toDos}>
-					{toDos.map((toDo) => <ToDo key={toDo.id} {...toDo} deleteToDo={deleteToDo} />)}
+					{toDos.map((toDo) => (
+						<ToDo
+							key={toDo.id}
+							{...toDo}
+							deleteToDo={deleteToDo}
+							completeToDo={completeToDo}
+							uncompleteToDo={uncompleteToDo}
+						/>
+					))}
 				</ScrollView>
 			</View>
 		</View>
