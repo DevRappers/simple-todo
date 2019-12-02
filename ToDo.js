@@ -27,8 +27,8 @@ function ToDo({ text }) {
 				{isEditing ? (
 					<TextInput
 						style={[
-							styles.input,
 							styles.text,
+							styles.input,
 							isCompleted ? styles.completedText : styles.uncompletedText
 						]}
 						value={toDoValue}
@@ -106,8 +106,7 @@ const styles = StyleSheet.create({
 	column: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		width: width / 2,
-		justifyContent: 'space-between'
+		width: width / 2
 	},
 	actions: {
 		flexDirection: 'row'
@@ -116,7 +115,11 @@ const styles = StyleSheet.create({
 		marginVertical: 10,
 		marginHorizontal: 10
 	},
-	input: {}
+	input: {
+		width: width / 2,
+		marginVertical: 15,
+		paddingBottom: 5
+	}
 });
 
 export default ToDo;

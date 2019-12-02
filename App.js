@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, StatusBar, TextInput, Dimensions, Platform, ScrollView } from 'react-native';
+import { AppLoading } from 'expo';
 import ToDo from './ToDo';
 
 const { height, width } = Dimensions.get('window');
 
 export default function App() {
 	const [ newToDo, setNewToDo ] = useState('');
+	const [ loadedToDos, setLoadedToDos ] = useState(false);
+	useEffect(() => {
+		setLoadedToDos(true);
+	}, []);
+	if (!loadedToDos) {
+		return <AppLoading />;
+	}
 	return (
 		<View style={styles.container}>
 			<StatusBar barStyle="light-content" />
@@ -21,7 +29,7 @@ export default function App() {
 					autoCorrect={false}
 				/>
 				<ScrollView contentContainerStyle={styles.toDos}>
-					<ToDo text={'안녕하세요 여러분'} />
+					<ToDo text={'aaa'} />
 				</ScrollView>
 			</View>
 		</View>
