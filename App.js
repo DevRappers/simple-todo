@@ -2,15 +2,36 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, StatusBar, TextInput, Dimensions, Platform, ScrollView } from 'react-native';
 import { AppLoading } from 'expo';
 import ToDo from './ToDo';
+import uuidv1 from 'uuid/v1';
 
 const { height, width } = Dimensions.get('window');
 
 export default function App() {
 	const [ newToDo, setNewToDo ] = useState('');
 	const [ loadedToDos, setLoadedToDos ] = useState(false);
+	const [ toDos, setToDos ] = useState([]);
+
 	useEffect(() => {
 		setLoadedToDos(true);
 	}, []);
+
+	const addToDo = () => {
+		if (newToDo !== '') {
+			const ID = uuidv1();
+			const newToDoObject = {
+				id: ID,
+				isCompleted: false,
+				text: newToDo,
+				createdAt: Date.now()
+			};
+			setToDos([ ...toDos, newToDoObject ]);
+		}
+		setNewToDo('');
+	};
+	const deleteToDo = (id) => {
+		setToDos(toDos.filter((toDo) => toDo.id !== id));
+	};
+
 	if (!loadedToDos) {
 		return <AppLoading />;
 	}
@@ -27,9 +48,10 @@ export default function App() {
 					placeholderTextColor={'#999'}
 					returnKeyType={'done'}
 					autoCorrect={false}
+					onSubmitEditing={addToDo}
 				/>
 				<ScrollView contentContainerStyle={styles.toDos}>
-					<ToDo text={'aaa'} />
+					{toDos.map((toDo) => <ToDo key={toDo.id} {...toDo} deleteToDo={deleteToDo} />)}
 				</ScrollView>
 			</View>
 		</View>

@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions, TextInput } from 'react-native';
+import PropTypes from 'prop-types';
 
 const { width, height } = Dimensions.get('window');
 
-function ToDo({ text }) {
-	const [ isEditing, setIsEditing ] = useState(false);
-	const [ isCompleted, setIsCompleted ] = useState(false);
-	const [ toDoValue, setToDoValue ] = useState('');
+function ToDo({ text, isCompleted, deleteToDo, id }) {
+	const [ isEditing, setIsEditing ] = useState(isCompleted);
+	const [ isCompletedS, setIsCompleted ] = useState(false);
+	const [ toDoValue, setToDoValue ] = useState(text);
 
 	const toggleComplete = () => {
 		setIsCompleted((prevState) => !prevState);
 	};
-	const stateEditing = () => {
-		setToDoValue(text);
+	const startEditing = () => {
 		setIsEditing(true);
 	};
 	const finishEditing = () => {
@@ -22,14 +22,14 @@ function ToDo({ text }) {
 		<View style={styles.container}>
 			<View style={styles.column}>
 				<TouchableOpacity onPress={toggleComplete}>
-					<View style={[ styles.circle, isCompleted ? styles.completedCircle : styles.uncompletedCircle ]} />
+					<View style={[ styles.circle, isCompletedS ? styles.completedCircle : styles.uncompletedCircle ]} />
 				</TouchableOpacity>
 				{isEditing ? (
 					<TextInput
 						style={[
 							styles.text,
 							styles.input,
-							isCompleted ? styles.completedText : styles.uncompletedText
+							isCompletedS ? styles.completedText : styles.uncompletedText
 						]}
 						value={toDoValue}
 						onChangeText={setToDoValue}
@@ -38,7 +38,7 @@ function ToDo({ text }) {
 						onBlur={finishEditing}
 					/>
 				) : (
-					<Text style={[ styles.text, isCompleted ? styles.completedText : styles.uncompletedText ]}>
+					<Text style={[ styles.text, isCompletedS ? styles.completedText : styles.uncompletedText ]}>
 						{text}
 					</Text>
 				)}
@@ -53,12 +53,12 @@ function ToDo({ text }) {
 				</View>
 			) : (
 				<View style={styles.actions}>
-					<TouchableOpacity onPressOut={stateEditing}>
+					<TouchableOpacity onPressOut={startEditing}>
 						<View style={styles.actionContainer}>
 							<Text style={styles.actionText}>✏️</Text>
 						</View>
 					</TouchableOpacity>
-					<TouchableOpacity>
+					<TouchableOpacity onPressOut={() => deleteToDo(id)}>
 						<View style={styles.actionContainer}>
 							<Text style={styles.actionText}>❌</Text>
 						</View>
@@ -68,6 +68,13 @@ function ToDo({ text }) {
 		</View>
 	);
 }
+
+ToDo.propTypes = {
+	text: PropTypes.string.isRequired,
+	isCompleted: PropTypes.bool.isRequired,
+	deleteToDo: PropTypes.func.isRequired,
+	id: PropTypes.string.isRequired
+};
 
 const styles = StyleSheet.create({
 	container: {
